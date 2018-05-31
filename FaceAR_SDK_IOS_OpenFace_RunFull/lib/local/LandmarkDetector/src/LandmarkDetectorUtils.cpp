@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 // Copyright (C) 2016, Carnegie Mellon University and University of Cambridge,
 // all rights reserved.
 //
@@ -857,9 +857,16 @@ void DrawBox(cv::Mat image, cv::Vec6d pose, cv::Scalar color, int thickness, flo
         {
             cv::line(image, p1, p2, color, thickness);
         }
-
     }
-
+}
+    
+void ShowActionUnits(cv::Mat image)
+{
+    putText(image, "AU1", cvPoint(10, 20), 1, 1.5, cvScalar(0, 255, 0), 2);
+    putText(image, "AU2", cvPoint(10, 45), 1, 1.5, cvScalar(0, 255, 0), 2);
+    putText(image, "AU3", cvPoint(10, 70), 1, 1.5, cvScalar(0, 255, 0), 2);
+    putText(image, "AU4", cvPoint(10, 95), 1, 1.5, cvScalar(0, 255, 0), 2);
+    putText(image, "AU5", cvPoint(10, 120), 1, 1.5, cvScalar(0, 255, 0), 2);
 }
 
 std::vector<std::pair<cv::Point, cv::Point> > CalculateBox(cv::Vec6d pose, float fx, float fy, float cx, float cy)

@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 // Copyright (C) 2016, Carnegie Mellon University and University of Cambridge,
 // all rights reserved.
 //
@@ -108,6 +108,7 @@ namespace LandmarkDetector
 	//===========================================================================
 	void Project(cv::Mat_<double>& dest, const cv::Mat_<double>& mesh, double fx, double fy, double cx, double cy);
 	void DrawBox(cv::Mat image, cv::Vec6d pose, cv::Scalar color, int thickness, float fx, float fy, float cx, float cy);
+    void ShowActionUnits(cv::Mat image);
 
 	// Drawing face bounding box
     std::vector<std::pair<cv::Point, cv::Point>> CalculateBox(cv::Vec6d pose, float fx, float fy, float cx, float cy);
