@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     std::cout << "model_location = " << det_parameters.model_location << std::endl;
     std::cout << "face_detector_location = " << det_parameters.face_detector_location << std::endl;
 
-    cv::Mat img = cv::imread("sample1.jpg");
+    cv::Mat img = cv::imread("../test.jpg");
     //cv::IMREAD_GRAYSCALE);
 
     cv::Mat_<float> depth_image;
