@@ -49,6 +49,7 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
 
         // Draw it in reddish if uncertain, blueish if certain
         LandmarkDetector::DrawBox(captured_image, pose_estimate_to_draw, cv::Scalar((1 - vis_certainty)*255.0, 0, vis_certainty * 255), thickness, fx, fy, cx, cy);
+        LandmarkDetector::ShowActionUnits(captured_image);
     }
 }
 
@@ -75,10 +76,20 @@ int main(int argc, char** argv)
 
     bool detection_success = LandmarkDetector::DetectLandmarksInVideo(grayscale_image, depth_image, clnf_model, det_parameters);
 
+    cout << "detection_success = " << detection_success << endl;
+
     double detection_certainty = clnf_model.detection_certainty;
 
     int frame_count;
-    int fx, fy, cx, cy;
+    float fx, fy, cx, cy;
+    cx = 1.0 * img.cols / 2.0;
+    cy = 1.0 * img.rows / 2.0;
+
+    fx = 500 * (img.cols / 640.0);
+    fy = 500 * (img.rows / 480.0);
+
+    fx = (fx + fy) / 2.0;
+    fy = fx;
     visualise_tracking(img, depth_image, clnf_model, det_parameters, frame_count, fx, fy, cx, cy);
 
     cv::Point3f gazeDirection0(0, 0, -1);
