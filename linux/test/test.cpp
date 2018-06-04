@@ -14,14 +14,12 @@
 
 #include "LandmarkCoreIncludes.h"
 #include "GazeEstimation.h"
+#include "FaceAnalyser.h"
 
 using namespace std;
 
-LandmarkDetector::FaceModelParameters det_parameters;
-LandmarkDetector::CLNF clnf_model;
-
 void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, const LandmarkDetector::CLNF& face_model,
-        const LandmarkDetector::FaceModelParameters& det_parameters, int frame_count, double fx, double fy, double cx, double cy)
+                        const LandmarkDetector::FaceModelParameters& det_parameters, int frame_count, double fx, double fy, double cx, double cy)
 {
     // Drawing the facial landmarks on the face and the bounding box around it if tracking is successful and initialised
     double detection_certainty = face_model.detection_certainty;
@@ -55,6 +53,11 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
 
 int main(int argc, char** argv)
 {
+    LandmarkDetector::FaceModelParameters det_parameters;
+    LandmarkDetector::CLNF clnf_model;
+
+    FaceAnalysis::FaceAnalyser face_analyser;
+
     det_parameters.init();
     det_parameters.model_location = "../../FaceAR_SDK_IOS_OpenFace_RunFull/model/model/main_clnf_general.txt";
     det_parameters.face_detector_location = "../../FaceAR_SDK_IOS_OpenFace_RunFull/model/classifiers/haarcascade_frontalface_alt.xml";
@@ -62,6 +65,10 @@ int main(int argc, char** argv)
     clnf_model.model_location_clnf = "../../FaceAR_SDK_IOS_OpenFace_RunFull/model/model/main_clnf_general.txt";
     clnf_model.face_detector_location_clnf = "../../FaceAR_SDK_IOS_OpenFace_RunFull/model/classifiers/haarcascade_frontalface_alt.xml";
     clnf_model.inits();
+
+    if (face_analyser.GetAUClassNames().size() == 0 && face_analyser.GetAURegNames().size()) {
+        cout << "WARNING: no Action Unit models found" << endl;
+    }
 
     std::cout << "model_location = " << det_parameters.model_location << std::endl;
     std::cout << "face_detector_location = " << det_parameters.face_detector_location << std::endl;
@@ -94,10 +101,28 @@ int main(int argc, char** argv)
 
     cv::Point3f gazeDirection0(0, 0, -1);
     cv::Point3f gazeDirection1(0, 0, -1);
-    if (det_parameters.track_gaze && detection_success && clnf_model.eye_model){
+    if (det_parameters.track_gaze && detection_success && clnf_model.eye_model) {
         GazeEstimate::EstimateGaze(clnf_model, gazeDirection0, fx, fy, cx, cy, true);
         GazeEstimate::EstimateGaze(clnf_model, gazeDirection1, fx, fy, cx, cy, false);
         GazeEstimate::DrawGaze(img, clnf_model, gazeDirection0, gazeDirection1, fx, fy, cx, cy);
+    }
+
+    cv::Mat sim_warped_img;
+    cv::Mat_<double> hog_descriptor; int num_hog_rows = 0, num_hog_cols = 0;
+    if(detection_success) {
+        face_analyser.PredictStaticAUsAndComputeFeatures(img, clnf_model.detected_landmarks);
+        face_analyser.GetLatestAlignedFace(sim_warped_img);
+        face_analyser.GetLatestHOG(hog_descriptor, num_hog_rows, num_hog_cols);
+    }
+
+    vector<pair<string, double> > au_regs = face_analyser.GetCurrentAUsReg();
+    vector<pair<string, double> > au_class = face_analyser.GetCurrentAUsClass();
+
+    for(int i=0; i< au_regs.size(); i++) {
+        std::cout << au_regs[i].first << ": " << au_regs[i].second << std::endl;
+    }
+    for(int i=0; i< au_class.size(); i++) {
+        std::cout << au_class[i].first << ": " << au_class[i].second << std::endl;
     }
 
     cv::imwrite("./aa.jpg", img);

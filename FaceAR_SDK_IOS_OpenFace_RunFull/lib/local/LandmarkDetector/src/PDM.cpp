@@ -517,7 +517,7 @@ void PDM::UpdateModelParameters(const cv::Mat_<float>& delta_p, cv::Mat_<float>&
 
 }
 
-void PDM::CalcParams(cv::Vec6d& out_params_global, const cv::Mat_<double>& out_params_local, const cv::Mat_<double>& landmark_locations, const cv::Vec3d rotation)
+void PDM::CalcParams(cv::Vec6d& out_params_global, cv::Mat_<double>& out_params_local, const cv::Mat_<double>& landmark_locations, const cv::Vec3d rotation)
 {
 		
 	int m = this->NumberOfModes();
@@ -709,6 +709,8 @@ void PDM::CalcParams(cv::Vec6d& out_params_global, const cv::Mat_<double>& out_p
 	}
 
 	out_params_global = glob_params;
+    out_params_local.cols = loc_params.cols;
+    out_params_local.rows = loc_params.rows;
 	loc_params.convertTo(out_params_local, CV_64F);
     	
 	this->mean_shape = m_old;
