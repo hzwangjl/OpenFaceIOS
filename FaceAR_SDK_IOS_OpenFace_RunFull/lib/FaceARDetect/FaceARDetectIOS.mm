@@ -22,10 +22,10 @@ LandmarkDetector::CLNF clnf_model;
     det_parameters.init();
     det_parameters.model_location = [location UTF8String] + std::string("/model/main_clnf_general.txt");
     det_parameters.face_detector_location = [location UTF8String] + std::string("/classifiers/haarcascade_frontalface_alt.xml");
-    
+
     std::cout << "model_location = " << det_parameters.model_location << std::endl;
     std::cout << "face_detector_location = " << det_parameters.face_detector_location << std::endl;
-    
+
     clnf_model.model_location_clnf = [location UTF8String] + std::string("/model/main_clnf_general.txt");
     clnf_model.face_detector_location_clnf = [location UTF8String] + std::string("/classifiers/haarcascade_frontalface_alt.xml");
     clnf_model.inits();
@@ -37,34 +37,33 @@ LandmarkDetector::CLNF clnf_model;
 void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, const LandmarkDetector::CLNF& face_model, const LandmarkDetector::FaceModelParameters& det_parameters, int frame_count, double fx, double fy, double cx, double cy)
 //-(BOOL) visualise_tracking:(cv::Mat)captured_image depth_image_:(cv::Mat)depth_image face_model_:(const LandmarkDetector::CLNF)face_model det_parameters_:(const LandmarkDetector::FaceModelParameters)det_parameters frame_count_:(int)frame_count fx_:(double)fx fy_:(double)fy cx_:(double)cx cy_:(double)cy
 {
-    
+
     // Drawing the facial landmarks on the face and the bounding box around it if tracking is successful and initialised
     double detection_certainty = face_model.detection_certainty;
     bool detection_success = face_model.detection_success;
-    
+
     double visualisation_boundary = 0.2;
-    
+
     // Only draw if the reliability is reasonable, the value is slightly ad-hoc
     if (detection_certainty < visualisation_boundary)
     {
         LandmarkDetector::Draw(captured_image, face_model);
-        
+
         double vis_certainty = detection_certainty;
         if (vis_certainty > 1)
             vis_certainty = 1;
         if (vis_certainty < -1)
             vis_certainty = -1;
-        
+
         vis_certainty = (vis_certainty + 1) / (visualisation_boundary + 1);
-        
+
         // A rough heuristic for box around the face width
         int thickness = (int)std::ceil(2.0* ((double)captured_image.cols) / 640.0);
-        
+
         cv::Vec6d pose_estimate_to_draw = LandmarkDetector::GetCorrectedPoseWorld(face_model, fx, fy, cx, cy);
-        
+
         // Draw it in reddish if uncertain, blueish if certain
         LandmarkDetector::DrawBox(captured_image, pose_estimate_to_draw, cv::Scalar((1 - vis_certainty)*255.0, 0, vis_certainty * 255), thickness, fx, fy, cx, cy);
-        LandmarkDetector::ShowActionUnits(captured_image);
     }
 }
 
@@ -75,7 +74,7 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
     // Reading the images
     cv::Mat_<float> depth_image;
     cv::Mat_<uchar> grayscale_image;
-    
+
     if(captured_image.channels() == 3)
     {
         cv::cvtColor(captured_image, grayscale_image, CV_BGR2GRAY);
@@ -84,17 +83,17 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
     {
         grayscale_image = captured_image.clone();
     }
-    
+
     // The actual facial landmark detection / tracking
     bool detection_success = LandmarkDetector::DetectLandmarksInVideo(grayscale_image, depth_image, clnf_model, det_parameters);
     //            bool detection_success = LandmarkDetector::DetectLandmarksInImage(grayscale_image, depth_image, clnf_model, det_parameters);
-    
+
     // Visualising the results
     // Drawing the facial landmarks on the face and the bounding box around it if tracking is successful and initialised
     double detection_certainty = clnf_model.detection_certainty;
-    
+
     visualise_tracking(captured_image, depth_image, clnf_model, det_parameters, frame_count, fx, fy, cx, cy);
-    
+
     //////////////////////////////////////////////////////////////////////
     /// gaze EstimateGaze
     ///
@@ -106,7 +105,7 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
         GazeEstimate::EstimateGaze(clnf_model, gazeDirection1, fx, fy, cx, cy, false);
         GazeEstimate::DrawGaze(captured_image, clnf_model, gazeDirection0, gazeDirection1, fx, fy, cx, cy);
     }
-    
+
     return true;
 }
 
@@ -114,7 +113,7 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
 -(BOOL) reset_FaceAR
 {
     clnf_model.Reset();
-    
+
     return true;
 }
 
@@ -122,7 +121,7 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
 -(BOOL) clear_FaceAR
 {
     clnf_model.Reset();
-    
+
     return true;
 }
 

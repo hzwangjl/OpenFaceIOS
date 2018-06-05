@@ -47,8 +47,22 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
 
         // Draw it in reddish if uncertain, blueish if certain
         LandmarkDetector::DrawBox(captured_image, pose_estimate_to_draw, cv::Scalar((1 - vis_certainty)*255.0, 0, vis_certainty * 255), thickness, fx, fy, cx, cy);
-        LandmarkDetector::ShowActionUnits(captured_image);
     }
+}
+
+void ShowActionUnits(std::vector<pair<std::string, double> > au_class, cv::Mat& image)
+{
+    CvScalar color;
+
+		for(int i = 0; i < au_class.size(); i++) {
+        if(au_class[i].second == 1){
+          color = cvScalar(0, 0, 255);
+        }
+        else{
+          color = cvScalar(0, 255, 0);
+        }
+				putText(image, au_class[i].first, cvPoint(10, 20 + 25 * i), 1, 1.5, color, 2);
+		}
 }
 
 int main(int argc, char** argv)
@@ -118,12 +132,16 @@ int main(int argc, char** argv)
     vector<pair<string, double> > au_regs = face_analyser.GetCurrentAUsReg();
     vector<pair<string, double> > au_class = face_analyser.GetCurrentAUsClass();
 
+#if 0
     for(int i=0; i< au_regs.size(); i++) {
         std::cout << au_regs[i].first << ": " << au_regs[i].second << std::endl;
     }
     for(int i=0; i< au_class.size(); i++) {
         std::cout << au_class[i].first << ": " << au_class[i].second << std::endl;
     }
+#endif
+
+    ShowActionUnits(au_class, img);
 
     cv::imwrite("./aa.jpg", img);
     system("~/imgcat.sh aa.jpg");
