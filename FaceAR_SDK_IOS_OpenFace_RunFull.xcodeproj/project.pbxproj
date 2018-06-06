@@ -36,6 +36,13 @@
 		83B04FAF1D2B8D73008A9370 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B04FAE1D2B8D73008A9370 /* CoreMedia.framework */; };
 		83B04FB11D2B8D7C008A9370 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B04FB01D2B8D7C008A9370 /* AVFoundation.framework */; };
 		83B04FB31D2B8DAD008A9370 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B04FB21D2B8DAD008A9370 /* opencv2.framework */; };
+		A101287220C7C6B400968FCE /* AU_predictors in Resources */ = {isa = PBXBuildFile; fileRef = A101287120C7C6B400968FCE /* AU_predictors */; };
+		A101288220C7C6DF00968FCE /* SVM_dynamic_lin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A101287C20C7C6DF00968FCE /* SVM_dynamic_lin.cpp */; };
+		A101288320C7C6DF00968FCE /* SVM_static_lin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A101287D20C7C6DF00968FCE /* SVM_static_lin.cpp */; };
+		A101288420C7C6DF00968FCE /* SVR_dynamic_lin_regressors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A101287E20C7C6DF00968FCE /* SVR_dynamic_lin_regressors.cpp */; };
+		A101288520C7C6DF00968FCE /* Face_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A101287F20C7C6DF00968FCE /* Face_utils.cpp */; };
+		A101288620C7C6DF00968FCE /* FaceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A101288020C7C6DF00968FCE /* FaceAnalyser.cpp */; };
+		A101288720C7C6DF00968FCE /* SVR_static_lin_regressors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A101288120C7C6DF00968FCE /* SVR_static_lin_regressors.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +114,19 @@
 		83B04FAE1D2B8D73008A9370 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		83B04FB01D2B8D7C008A9370 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		83B04FB21D2B8DAD008A9370 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = FaceAR_SDK_IOS_OpenFace_RunFull/opencv2.framework; sourceTree = "<group>"; };
+		A101287120C7C6B400968FCE /* AU_predictors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AU_predictors; path = FaceAR_SDK_IOS_OpenFace_RunFull/model/AU_predictors; sourceTree = "<group>"; };
+		A101287520C7C6DF00968FCE /* Face_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Face_utils.h; sourceTree = "<group>"; };
+		A101287620C7C6DF00968FCE /* SVM_dynamic_lin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVM_dynamic_lin.h; sourceTree = "<group>"; };
+		A101287720C7C6DF00968FCE /* SVR_dynamic_lin_regressors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVR_dynamic_lin_regressors.h; sourceTree = "<group>"; };
+		A101287820C7C6DF00968FCE /* FaceAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceAnalyser.h; sourceTree = "<group>"; };
+		A101287920C7C6DF00968FCE /* SVR_static_lin_regressors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVR_static_lin_regressors.h; sourceTree = "<group>"; };
+		A101287A20C7C6DF00968FCE /* SVM_static_lin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVM_static_lin.h; sourceTree = "<group>"; };
+		A101287C20C7C6DF00968FCE /* SVM_dynamic_lin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SVM_dynamic_lin.cpp; sourceTree = "<group>"; };
+		A101287D20C7C6DF00968FCE /* SVM_static_lin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SVM_static_lin.cpp; sourceTree = "<group>"; };
+		A101287E20C7C6DF00968FCE /* SVR_dynamic_lin_regressors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SVR_dynamic_lin_regressors.cpp; sourceTree = "<group>"; };
+		A101287F20C7C6DF00968FCE /* Face_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Face_utils.cpp; sourceTree = "<group>"; };
+		A101288020C7C6DF00968FCE /* FaceAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceAnalyser.cpp; sourceTree = "<group>"; };
+		A101288120C7C6DF00968FCE /* SVR_static_lin_regressors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SVR_static_lin_regressors.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +172,7 @@
 		8304A0AD1D2BBD1100E2E96B /* local */ = {
 			isa = PBXGroup;
 			children = (
+				A101287320C7C6DF00968FCE /* FaceAnalyser */,
 				833EB6C41D2E0B3A0068AB39 /* GazeEstimate */,
 				8304A0AE1D2BBD1100E2E96B /* LandmarkDetector */,
 			);
@@ -217,6 +238,7 @@
 		83B04F681D2B8BF4008A9370 = {
 			isa = PBXGroup;
 			children = (
+				A101287120C7C6B400968FCE /* AU_predictors */,
 				8304A1961D2BF7C000E2E96B /* classifiers */,
 				8304A1941D2BF7B200E2E96B /* model */,
 				8304A0AD1D2BBD1100E2E96B /* local */,
@@ -286,6 +308,41 @@
 			path = FaceAR_SDK_IOS_OpenFace_RunFullUITests;
 			sourceTree = "<group>";
 		};
+		A101287320C7C6DF00968FCE /* FaceAnalyser */ = {
+			isa = PBXGroup;
+			children = (
+				A101287420C7C6DF00968FCE /* include */,
+				A101287B20C7C6DF00968FCE /* src */,
+			);
+			path = FaceAnalyser;
+			sourceTree = "<group>";
+		};
+		A101287420C7C6DF00968FCE /* include */ = {
+			isa = PBXGroup;
+			children = (
+				A101287520C7C6DF00968FCE /* Face_utils.h */,
+				A101287620C7C6DF00968FCE /* SVM_dynamic_lin.h */,
+				A101287720C7C6DF00968FCE /* SVR_dynamic_lin_regressors.h */,
+				A101287820C7C6DF00968FCE /* FaceAnalyser.h */,
+				A101287920C7C6DF00968FCE /* SVR_static_lin_regressors.h */,
+				A101287A20C7C6DF00968FCE /* SVM_static_lin.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		A101287B20C7C6DF00968FCE /* src */ = {
+			isa = PBXGroup;
+			children = (
+				A101287C20C7C6DF00968FCE /* SVM_dynamic_lin.cpp */,
+				A101287D20C7C6DF00968FCE /* SVM_static_lin.cpp */,
+				A101287E20C7C6DF00968FCE /* SVR_dynamic_lin_regressors.cpp */,
+				A101287F20C7C6DF00968FCE /* Face_utils.cpp */,
+				A101288020C7C6DF00968FCE /* FaceAnalyser.cpp */,
+				A101288120C7C6DF00968FCE /* SVR_static_lin_regressors.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -353,7 +410,7 @@
 				TargetAttributes = {
 					83B04F701D2B8BF4008A9370 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = XEXQ6WKSUP;
+						DevelopmentTeam = 443T6X3F25;
 					};
 					83B04F8C1D2B8BF4008A9370 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -390,6 +447,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A101287220C7C6B400968FCE /* AU_predictors in Resources */,
 				8304A1971D2BF7C000E2E96B /* classifiers in Resources */,
 				8304A1951D2BF7B200E2E96B /* model in Resources */,
 				83B04F871D2B8BF4008A9370 /* LaunchScreen.storyboard in Resources */,
@@ -419,21 +477,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A101288220C7C6DF00968FCE /* SVM_dynamic_lin.cpp in Sources */,
+				A101288520C7C6DF00968FCE /* Face_utils.cpp in Sources */,
 				8304A0AC1D2BBD0600E2E96B /* FaceARDetectIOS.mm in Sources */,
 				8304A0CA1D2BBD1100E2E96B /* LandmarkDetectorFunc.cpp in Sources */,
 				83B04F821D2B8BF4008A9370 /* FaceAR_SDK_IOS_OpenFace_RunFull.xcdatamodeld in Sources */,
+				A101288620C7C6DF00968FCE /* FaceAnalyser.cpp in Sources */,
 				8304A0C81D2BBD1100E2E96B /* CCNF_patch_expert.cpp in Sources */,
 				833EB6C91D2E0B3A0068AB39 /* GazeEstimation.cpp in Sources */,
 				8304A0CE1D2BBD1100E2E96B /* Patch_experts.cpp in Sources */,
 				8304A0D01D2BBD1100E2E96B /* PDM.cpp in Sources */,
 				8304A0D21D2BBD1100E2E96B /* SVR_patch_expert.cpp in Sources */,
 				83B04F7C1D2B8BF4008A9370 /* ViewController.mm in Sources */,
+				A101288320C7C6DF00968FCE /* SVM_static_lin.cpp in Sources */,
 				83B04F791D2B8BF4008A9370 /* AppDelegate.mm in Sources */,
 				8304A0CB1D2BBD1100E2E96B /* LandmarkDetectorModel.cpp in Sources */,
 				8304A0D11D2BBD1100E2E96B /* stdafx.cpp in Sources */,
+				A101288420C7C6DF00968FCE /* SVR_dynamic_lin_regressors.cpp in Sources */,
 				8304A0CC1D2BBD1100E2E96B /* LandmarkDetectorParameters.cpp in Sources */,
 				8304A0C91D2BBD1100E2E96B /* LandmarkDetectionValidator.cpp in Sources */,
 				8304A0CF1D2BBD1100E2E96B /* PAW.cpp in Sources */,
+				A101288720C7C6DF00968FCE /* SVR_static_lin_regressors.cpp in Sources */,
 				8304A0CD1D2BBD1100E2E96B /* LandmarkDetectorUtils.cpp in Sources */,
 				83B04F761D2B8BF4008A9370 /* main.m in Sources */,
 			);
@@ -527,10 +591,19 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/Users/jelly/Downloads/project/OpenFaceIOS/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/FaceAnalyser/include,
+					/Users/jelly/Downloads/project/OpenFaceIOS/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/dlib_release/,
+					"/usr/local/Cellar/boost@1.59/1.59.0/include",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LIBRARY_SEARCH_PATHS = /Users/jelly/Downloads/project/OpenFaceIOS/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/dlib_release/;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ldilb";
+				"OTHER_LDFLAGS[arch=*]" = "";
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -565,9 +638,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/Users/jelly/Downloads/project/OpenFaceIOS/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/FaceAnalyser/include,
+					/Users/jelly/Downloads/project/OpenFaceIOS/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/dlib_release/,
+					"/usr/local/Cellar/boost@1.59/1.59.0/include",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LIBRARY_SEARCH_PATHS = /Users/jelly/Downloads/project/OpenFaceIOS/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/dlib_release/;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ldlib";
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -578,6 +659,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 443T6X3F25;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -585,7 +667,7 @@
 				);
 				INFOPLIST_FILE = FaceAR_SDK_IOS_OpenFace_RunFull/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "KeeganRen.FaceAR-SDK-IOS-OpenFace-RunFull";
+				PRODUCT_BUNDLE_IDENTIFIER = "OpenFace-IOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/FaceAR_SDK_IOS_OpenFace_RunFull/lib/FaceARDetect $(SRCROOT)/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/LandmarkDetector/include $(SRCROOT)/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/GazeEstimate";
@@ -598,6 +680,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 443T6X3F25;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -606,7 +689,7 @@
 				INFOPLIST_FILE = FaceAR_SDK_IOS_OpenFace_RunFull/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "KeeganRen.FaceAR-SDK-IOS-OpenFace-RunFull";
+				PRODUCT_BUNDLE_IDENTIFIER = "OpenFace-IOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/FaceAR_SDK_IOS_OpenFace_RunFull/lib/FaceARDetect $(SRCROOT)/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/LandmarkDetector/include $(SRCROOT)/FaceAR_SDK_IOS_OpenFace_RunFull/lib/local/GazeEstimate";
