@@ -51,6 +51,7 @@
 #include <filesystem.hpp>
 #include <filesystem/fstream.hpp>
 #endif
+
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/split.hpp>
 
@@ -66,21 +67,15 @@ using namespace std;
 //FaceAnalyser::FaceAnalyser(const FaceAnalysis::FaceAnalyserParameters& face_analyser_params)
 FaceAnalyser::FaceAnalyser()
 {
-	printf("##### FaceAnalyser::FaceAnalyser \n\n");
-  string model_loc = "../AU_predictors/main_static_svms.txt";
-	//this->Read(face_analyser_params.getModelLoc());
-	this->Read(model_loc);
-#if 0
-	align_mask = face_analyser_params.getAlignMask();
-	align_scale_out = face_analyser_params.getSimScaleOut();
-	align_width_out = face_analyser_params.getSimSizeOut();
-	align_height_out = face_analyser_params.getSimSizeOut();
 
-	align_scale_au = face_analyser_params.sim_scale_au;
-	align_width_au = face_analyser_params.sim_size_au;
-	align_height_au = face_analyser_params.sim_size_au;
-#else
-  align_mask = true;
+}
+
+void FaceAnalyser::init()
+{
+    string model_loc = this->svm_model_path;
+    this->Read(model_loc);
+
+    align_mask = true;
 	align_scale_out = 0.7;
 	align_width_out = 112;
 	align_height_out = 112;
@@ -88,7 +83,6 @@ FaceAnalyser::FaceAnalyser()
 	align_scale_au = 0.7;
 	align_width_au = 112;
 	align_height_au = 112;
-#endif
 	// Initialise the histograms that will represent bins from 0 - 1 (as HoG values are only stored as those)
 	num_bins_hog = 1000;
 	max_val_hog = 1;
@@ -109,20 +103,7 @@ FaceAnalyser::FaceAnalyser()
 	//out_grayscale = face_analyser_params.grayscale;
 	out_grayscale = 0;
 
-#if 0
-	if(face_analyser_params.getOrientationBins().empty())
-	{
-		// Just using frontal currently
-		head_orientations.push_back(cv::Vec3d(0,0,0));
-	}
-	else
-	{
-		head_orientations = face_analyser_params.getOrientationBins();
-	}
-#else
-  head_orientations.push_back(cv::Vec3d(0,0,0));
-#endif
-  printf("PPP   %lu \n", head_orientations.size());
+    head_orientations.push_back(cv::Vec3d(0,0,0));
 
 	hog_hist_sum.resize(head_orientations.size());
 	face_image_hist_sum.resize(head_orientations.size());
@@ -133,7 +114,6 @@ FaceAnalyser::FaceAnalyser()
 	au_prediction_correction_count.resize(head_orientations.size(), 0);
 	au_prediction_correction_histogram.resize(head_orientations.size());
 	dyn_scaling.resize(head_orientations.size());
-
 }
 
 // Utility for getting the names of returned AUs (presence)
@@ -271,21 +251,16 @@ int GetViewId(const vector<cv::Vec3d> orientations_all, const cv::Vec3d& orienta
 		}
 	}
 	return id;
-
 }
 
 void FaceAnalyser::PredictStaticAUsAndComputeFeatures(const cv::Mat& frame, const cv::Mat_<double>& detected_landmarks)
 {
-	printf("RRRRR  PredictStaticAUsAndComputeFeatures \n\n");
-
 	// Extract shape parameters from the detected landmarks
 	cv::Vec6d params_global;
 	cv::Mat_<double> params_local;
 	pdm.CalcParams(params_global, params_local, detected_landmarks);
-
 	// The aligned face requirement for AUs
 	AlignFaceMask(aligned_face_for_au, frame, detected_landmarks, params_global, pdm, triangulation, true, align_scale_au, align_width_au, align_height_au);
-
 	// If the aligned face for AU matches the output requested one, just reuse it, else compute it
 	if (align_scale_out == align_scale_au && align_width_out == align_width_au && align_height_out == align_height_au && align_mask)
 	{
@@ -999,15 +974,13 @@ vector<pair<string, double>> FaceAnalyser::PredictCurrentAUsClass(int view)
 {
 
 	vector<pair<string, double>> predictions;
-
 	if(!hog_desc_frame.empty())
 	{
 		vector<string> svm_lin_stat_aus;
 		vector<double> svm_lin_stat_preds;
+        AU_SVM_static_appearance_lin.Predict(svm_lin_stat_preds, svm_lin_stat_aus, hog_desc_frame, geom_descriptor_frame);
 
-		AU_SVM_static_appearance_lin.Predict(svm_lin_stat_preds, svm_lin_stat_aus, hog_desc_frame, geom_descriptor_frame);
-
-		for(size_t i = 0; i < svm_lin_stat_aus.size(); ++i)
+        for(size_t i = 0; i < svm_lin_stat_aus.size(); ++i)
 		{
 			predictions.push_back(pair<string, double>(svm_lin_stat_aus[i], svm_lin_stat_preds[i]));
 		}
@@ -1058,8 +1031,7 @@ void FaceAnalyser::Read(std::string model_loc)
 
 	// The other module locations should be defined as relative paths from the main model
 	//boost::filesystem::path root = boost::filesystem::path(model_loc).parent_path();
-  string root = "../AU_predictors/";
-
+    string root = this->model_path;
 	// The main file contains the references to other files
 	while (!locations.eof())
 	{
@@ -1084,7 +1056,7 @@ void FaceAnalyser::Read(std::string model_loc)
 		// append to root
 		//location = (root / location).string();
 		location = root + location;
-		std::cout << "GGGGG " << location << std::endl;
+		std::cout << location << std::endl;
 
 		if (module.compare("AUPredictor") == 0)
 		{
@@ -1129,7 +1101,7 @@ void FaceAnalyser::ReadAU(std::string au_model_location)
 
 	// The other module locations should be defined as relative paths from the main model
 	//boost::filesystem::path root = boost::filesystem::path(au_model_location).parent_path();
-	string root = "../AU_predictors/";
+    string root = this->model_path;
 
 	// The main file contains the references to other files
 	while (!locations.eof())
@@ -1159,7 +1131,6 @@ void FaceAnalyser::ReadAU(std::string au_model_location)
 		boost::split(au_names, name, boost::is_any_of(","));
 
 		// append the lovstion to root location (boost syntax)
-		//location = (root / location).string();
 		location = root + location;
 
 		ReadRegressor(location, au_names);

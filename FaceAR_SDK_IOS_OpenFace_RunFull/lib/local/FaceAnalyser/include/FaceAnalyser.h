@@ -65,7 +65,8 @@ public:
 
 	// Constructor for FaceAnalyser using the parameters structure
 	//FaceAnalyser(const FaceAnalysis::FaceAnalyserParameters& face_analyser_params);
-  FaceAnalyser();
+    FaceAnalyser();
+    void init();
 #if 0 //jelly
 	void AddNextFrame(const cv::Mat& frame, const cv::Mat_<float>& detected_landmarks, bool success, double timestamp_seconds, bool online = false);
 
@@ -107,6 +108,10 @@ public:
 	// Helper function for post-processing AU output files
 	void PostprocessOutputFile(std::string output_file);
 #endif
+public:
+    std::string model_path;
+    std::string svm_model_path;
+    
 private:
 
 	// Point distribution model coddesponding to the current Face Analyser

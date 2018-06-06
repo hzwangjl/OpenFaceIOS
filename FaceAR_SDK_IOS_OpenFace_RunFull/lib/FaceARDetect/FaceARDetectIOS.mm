@@ -12,6 +12,8 @@ LandmarkDetector::FaceModelParameters det_parameters;
 // The modules that are being used for tracking
 LandmarkDetector::CLNF clnf_model;
 
+FaceAnalysis::FaceAnalyser face_analyser;
+
 @implementation FaceARDetectIOS
 
 //bool inits_FaceAR();
@@ -29,6 +31,10 @@ LandmarkDetector::CLNF clnf_model;
     clnf_model.model_location_clnf = [location UTF8String] + std::string("/model/main_clnf_general.txt");
     clnf_model.face_detector_location_clnf = [location UTF8String] + std::string("/classifiers/haarcascade_frontalface_alt.xml");
     clnf_model.inits();
+
+    face_analyser.model_path = [location UTF8String] + std::string("/AU_predictors/");
+    face_analyser.svm_model_path = [location UTF8String] + std::string("/AU_predictors/main_static_svms.txt");
+    face_analyser.init();
 
     return self;
 }
@@ -67,6 +73,21 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
     }
 }
 
+void ShowActionUnits(std::vector<std::pair<std::string, double> > au_class, cv::Mat& image)
+{
+    CvScalar color;
+    std::cout << "ShowActionUnits " << au_class.size() << std::endl;
+    for(int i = 0; i < au_class.size(); i++) {
+        if(au_class[i].second == 1){
+            color = cvScalar(0, 0, 255);
+        }
+        else{
+            color = cvScalar(0, 255, 0);
+        }
+        putText(image, au_class[i].first, cvPoint(10, 20 + 25 * i), 1, 1.5, color, 2);
+    }
+}
+
 
 //bool run_FaceAR(cv::Mat &captured_image, int frame_count, float fx, float fy, float cx, float cy);
 -(BOOL) run_FaceAR:(cv::Mat)captured_image frame__:(int)frame_count fx__:(double)fx fy__:(double)fy cx__:(double)cx cy__:(double)cy
@@ -94,9 +115,8 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
 
     visualise_tracking(captured_image, depth_image, clnf_model, det_parameters, frame_count, fx, fy, cx, cy);
 
-    //////////////////////////////////////////////////////////////////////
-    /// gaze EstimateGaze
-    ///
+    /********** gaze EstimateGaze **********/
+#if 0
     cv::Point3f gazeDirection0(0, 0, -1);
     cv::Point3f gazeDirection1(0, 0, -1);
     if (det_parameters.track_gaze && detection_success && clnf_model.eye_model)
@@ -105,6 +125,25 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
         GazeEstimate::EstimateGaze(clnf_model, gazeDirection1, fx, fy, cx, cy, false);
         GazeEstimate::DrawGaze(captured_image, clnf_model, gazeDirection0, gazeDirection1, fx, fy, cx, cy);
     }
+#endif
+
+    /********** AU Detections **********/
+    if (face_analyser.GetAUClassNames().size() == 0 && face_analyser.GetAURegNames().size()) {
+        std::cout << "WARNING: no Action Unit models found" << std::endl;
+    }
+
+    cv::Mat sim_warped_img;
+    cv::Mat_<double> hog_descriptor; int num_hog_rows = 0, num_hog_cols = 0;
+    if(detection_success) {
+        face_analyser.PredictStaticAUsAndComputeFeatures(captured_image, clnf_model.detected_landmarks);
+        face_analyser.GetLatestAlignedFace(sim_warped_img);
+        face_analyser.GetLatestHOG(hog_descriptor, num_hog_rows, num_hog_cols);
+    }
+
+    std::vector<std::pair<std::string, double> > au_regs = face_analyser.GetCurrentAUsReg();
+    std::vector<std::pair<std::string, double> > au_class = face_analyser.GetCurrentAUsClass();
+
+    ShowActionUnits(au_class, captured_image);
 
     return true;
 }

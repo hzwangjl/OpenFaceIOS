@@ -20,6 +20,7 @@
 
 #include "LandmarkCoreIncludes.h"
 #include "GazeEstimation.h"
+#include "FaceAnalyser.h"
 
 @interface FaceARDetectIOS : NSObject
 
