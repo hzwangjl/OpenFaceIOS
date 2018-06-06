@@ -76,7 +76,7 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
 void ShowActionUnits(std::vector<std::pair<std::string, double> > au_class, cv::Mat& image)
 {
     CvScalar color;
-    std::cout << "ShowActionUnits " << au_class.size() << std::endl;
+    //std::cout << "ShowActionUnits " << au_class.size() << std::endl;
     for(int i = 0; i < au_class.size(); i++) {
         if(au_class[i].second == 1){
             color = cvScalar(0, 0, 255);
