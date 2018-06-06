@@ -69,7 +69,6 @@ int main(int argc, char** argv)
 {
     LandmarkDetector::FaceModelParameters det_parameters;
     LandmarkDetector::CLNF clnf_model;
-
     FaceAnalysis::FaceAnalyser face_analyser;
 
     det_parameters.init();
@@ -79,6 +78,10 @@ int main(int argc, char** argv)
     clnf_model.model_location_clnf = "../../FaceAR_SDK_IOS_OpenFace_RunFull/model/model/main_clnf_general.txt";
     clnf_model.face_detector_location_clnf = "../../FaceAR_SDK_IOS_OpenFace_RunFull/model/classifiers/haarcascade_frontalface_alt.xml";
     clnf_model.inits();
+
+    face_analyser.model_path = "../../FaceAR_SDK_IOS_OpenFace_RunFull/model/AU_predictors/";
+    face_analyser.svm_model_path = "../../FaceAR_SDK_IOS_OpenFace_RunFull/model/AU_predictors/main_static_svms.txt";
+    face_analyser.init();
 
     if (face_analyser.GetAUClassNames().size() == 0 && face_analyser.GetAURegNames().size()) {
         cout << "WARNING: no Action Unit models found" << endl;
