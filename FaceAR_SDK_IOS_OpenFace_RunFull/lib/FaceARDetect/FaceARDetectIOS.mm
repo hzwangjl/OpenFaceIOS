@@ -73,21 +73,53 @@ void visualise_tracking(cv::Mat& captured_image, cv::Mat_<float>& depth_image, c
     }
 }
 
-void ShowActionUnits(std::vector<std::pair<std::string, double> > au_class, cv::Mat& image)
+void ShowActionUnits(std::vector<std::pair<std::string, double> > au_regs,
+                     std::vector<std::pair<std::string, double> > au_class,
+                     cv::Mat& image)
 {
     CvScalar color;
-    //std::cout << "ShowActionUnits " << au_class.size() << std::endl;
-    for(int i = 0; i < au_class.size(); i++) {
-        if(au_class[i].second == 1){
-            color = cvScalar(0, 0, 255);
+    for(int i = 0; i < au_regs.size(); i++) {
+        if(au_regs[i].first == "AU01" || au_regs[i].first == "AU06" || au_regs[i].first == "AU07" || au_regs[i].first == "AU14" ||
+           au_regs[i].first == "AU15" || au_regs[i].first == "AU20" || au_regs[i].first == "AU23" || au_regs[i].first == "AU25" ){
+            continue;
+        }
+
+        static int cnt[50] = {0};
+        float threashold = 0;
+        if(au_regs[i].first == "AU02" || au_regs[i].first == "AU05" || au_regs[i].first == "AU12" || au_regs[i].first == "AU26" ){
+            threashold = 2;
+        }
+        else if(au_regs[i].first == "AU04" || au_regs[i].first == "AU09" || au_regs[i].first == "AU17" || au_regs[i].first == "AU10" ){
+            threashold = 1.5;
+        }
+
+        color = cvScalar(0, 250, 0);
+        if(au_regs[i].second > threashold){
+            cnt[i]++;
+            if(cnt[i] > 20){
+                cnt[i] = 20;
+            }
+            if(cnt[i] > 2){
+                color = cvScalar(0, 0, 255);
+            }
         }
         else{
-            color = cvScalar(0, 255, 0);
+            cnt[i] = 0;
         }
-        putText(image, au_class[i].first, cvPoint(10, 20 + 25 * i), 1, 1.5, color, 2);
+
+        if(au_regs[i].first == "AU45"){
+            if(au_regs[i].second > 1.0){
+                color = cvScalar(0, 0, 255);
+            }
+            else{
+                color = cvScalar(0, 250, 0);
+            }
+        }
+
+        putText(image, au_regs[i].first, cvPoint(40, 20 + 25 * i), 1, 1.5, color, 2);
+        putText(image, std::to_string(au_regs[i].second), cvPoint(120, 20 + 25 * i), 1, 1.5, color, 2);
     }
 }
-
 
 //bool run_FaceAR(cv::Mat &captured_image, int frame_count, float fx, float fy, float cx, float cy);
 -(BOOL) run_FaceAR:(cv::Mat)captured_image frame__:(int)frame_count fx__:(double)fx fy__:(double)fy cx__:(double)cx cy__:(double)cy
@@ -135,7 +167,9 @@ void ShowActionUnits(std::vector<std::pair<std::string, double> > au_class, cv::
     cv::Mat sim_warped_img;
     cv::Mat_<double> hog_descriptor; int num_hog_rows = 0, num_hog_cols = 0;
     if(detection_success) {
-        face_analyser.PredictStaticAUsAndComputeFeatures(captured_image, clnf_model.detected_landmarks);
+        //face_analyser.PredictStaticAUsAndComputeFeatures(captured_image, clnf_model.detected_landmarks);
+        face_analyser.AddNextFrame(captured_image, clnf_model.detected_landmarks, clnf_model.detection_success,
+                                   0, true);
         face_analyser.GetLatestAlignedFace(sim_warped_img);
         face_analyser.GetLatestHOG(hog_descriptor, num_hog_rows, num_hog_cols);
     }
@@ -143,7 +177,7 @@ void ShowActionUnits(std::vector<std::pair<std::string, double> > au_class, cv::
     std::vector<std::pair<std::string, double> > au_regs = face_analyser.GetCurrentAUsReg();
     std::vector<std::pair<std::string, double> > au_class = face_analyser.GetCurrentAUsClass();
 
-    ShowActionUnits(au_class, captured_image);
+    ShowActionUnits(au_regs, au_class, captured_image);
 
     return true;
 }
