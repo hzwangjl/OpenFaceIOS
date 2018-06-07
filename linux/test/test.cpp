@@ -127,7 +127,9 @@ int main(int argc, char** argv)
     cv::Mat sim_warped_img;
     cv::Mat_<double> hog_descriptor; int num_hog_rows = 0, num_hog_cols = 0;
     if(detection_success) {
-        face_analyser.PredictStaticAUsAndComputeFeatures(img, clnf_model.detected_landmarks);
+        //face_analyser.PredictStaticAUsAndComputeFeatures(img, clnf_model.detected_landmarks);
+        face_analyser.AddNextFrame(img, clnf_model.detected_landmarks, clnf_model.detection_success,
+          0, true);
         face_analyser.GetLatestAlignedFace(sim_warped_img);
         face_analyser.GetLatestHOG(hog_descriptor, num_hog_rows, num_hog_cols);
     }

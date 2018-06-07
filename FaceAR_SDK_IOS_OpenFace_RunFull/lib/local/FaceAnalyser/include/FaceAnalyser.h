@@ -66,9 +66,10 @@ public:
 	// Constructor for FaceAnalyser using the parameters structure
   FaceAnalyser(){};
   void init();
-#if 0 //jelly
-	void AddNextFrame(const cv::Mat& frame, const cv::Mat_<float>& detected_landmarks, bool success, double timestamp_seconds, bool online = false);
 
+	void AddNextFrame(const cv::Mat& frame, const cv::Mat_<double>& detected_landmarks, bool success,
+		double timestamp_seconds, bool online = false);
+#if 0 //jelly
 	double GetCurrentTimeSeconds();
 #endif
 	// Grab the current predictions about AUs from the face analyser
@@ -180,23 +181,22 @@ private:
 	// The AU predictions internally
 	std::vector<std::pair<std::string, double>> PredictCurrentAUs(int view);
 	std::vector<std::pair<std::string, double>> PredictCurrentAUsClass(int view);
-#if 0 //jelly
+
 	// special step for online (rather than offline AU prediction)
 	std::vector<std::pair<std::string, double>> CorrectOnlineAUs(std::vector<std::pair<std::string, double>> predictions_orig, int view, bool dyn_shift = false, bool dyn_scale = false, bool update_track = true, bool clip_values = false);
-#endif
 
 	void Read(std::string model_loc);
 
 	void ReadAU(std::string au_location);
 
 	void ReadRegressor(std::string fname, const std::vector<std::string>& au_names);
-#if 0
+
 	// A utility function for keeping track of approximate running medians used for AU and emotion inference using a set of histograms (the histograms are evenly spaced from min_val to max_val)
 	// Descriptor has to be a row vector
 	// TODO this duplicates some other code
 	void UpdateRunningMedian(cv::Mat_<int>& histogram, int& hist_sum, cv::Mat_<double>& median, const cv::Mat_<double>& descriptor, bool update, int num_bins, double min_val, double max_val);
 	void ExtractMedian(cv::Mat_<int>& histogram, int hist_count, cv::Mat_<double>& median, int num_bins, double min_val, double max_val);
-#endif
+
 	// The linear SVR regressors
 	SVR_static_lin_regressors AU_SVR_static_appearance_lin_regressors;
 	SVR_dynamic_lin_regressors AU_SVR_dynamic_appearance_lin_regressors;
@@ -204,11 +204,12 @@ private:
 	// The linear SVM classifiers
 	SVM_static_lin AU_SVM_static_appearance_lin;
 	SVM_dynamic_lin AU_SVM_dynamic_appearance_lin;
-#if 0
+
 	// The AUs predicted by the model are not always 0 calibrated to a person. That is they don't always predict 0 for a neutral expression
 	// Keeping track of the predictions we can correct for this, by assuming that at least "ratio" of frames are neutral and subtract that value of prediction, only perform the correction after min_frames
 	void UpdatePredictionTrack(cv::Mat_<int>& prediction_corr_histogram, int& prediction_correction_count,
 		std::vector<double>& correction, const std::vector<std::pair<std::string, double>>& predictions, double ratio=0.25, int num_bins = 200, double min_val = -3, double max_val = 5, int min_frames = 10);
+#if 0
 	void GetSampleHist(cv::Mat_<int>& prediction_corr_histogram, int prediction_correction_count,
 		std::vector<double>& sample, double ratio, int num_bins = 200, double min_val = 0, double max_val = 5);
 

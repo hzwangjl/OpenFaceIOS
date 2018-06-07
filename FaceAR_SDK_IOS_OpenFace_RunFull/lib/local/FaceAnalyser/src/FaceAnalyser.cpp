@@ -316,15 +316,15 @@ void FaceAnalyser::PredictStaticAUsAndComputeFeatures(const cv::Mat& frame, cons
 
 }
 
-#if 0 //jelly
-void FaceAnalyser::AddNextFrame(const cv::Mat& frame, const cv::Mat_<float>& detected_landmarks, bool success, double timestamp_seconds, bool online)
+void FaceAnalyser::AddNextFrame(const cv::Mat& frame, const cv::Mat_<double>& detected_landmarks,
+  bool success, double timestamp_seconds, bool online)
 {
 
     frames_tracking++;
 
     // Extract shape parameters from the detected landmarks
-    cv::Vec6f params_global;
-    cv::Mat_<float> params_local;
+    cv::Vec6d params_global;
+    cv::Mat_<double> params_local;
 
     // First align the face if tracking was successfull
     if(success)
@@ -507,6 +507,7 @@ void FaceAnalyser::AddNextFrame(const cv::Mat& frame, const cv::Mat_<float>& det
 
 }
 
+#if 0 //jelly
 void FaceAnalyser::GetGeomDescriptor(cv::Mat_<double>& geom_desc)
 {
     geom_desc = this->geom_descriptor_frame.clone();
@@ -766,7 +767,7 @@ void FaceAnalyser::Reset()
     postprocessed = false;
     frames_tracking_succ = 0;
 }
-
+#endif
 void FaceAnalyser::UpdateRunningMedian(cv::Mat_<int>& histogram, int& hist_count, cv::Mat_<double>& median, const cv::Mat_<double>& descriptor, bool update, int num_bins, double min_val, double max_val)
 {
 
@@ -826,7 +827,6 @@ void FaceAnalyser::UpdateRunningMedian(cv::Mat_<int>& histogram, int& hist_count
     }
 }
 
-
 void FaceAnalyser::ExtractMedian(cv::Mat_<int>& histogram, int hist_count, cv::Mat_<double>& median, int num_bins, double min_val, double max_val)
 {
 
@@ -865,7 +865,7 @@ void FaceAnalyser::ExtractMedian(cv::Mat_<int>& histogram, int hist_count, cv::M
         }
     }
 }
-#endif
+
 // Apply the current predictors to the currently stored descriptors
 vector<pair<string, double> > FaceAnalyser::PredictCurrentAUs(int view)
 {
@@ -898,7 +898,7 @@ vector<pair<string, double> > FaceAnalyser::PredictCurrentAUs(int view)
 
     return predictions;
 }
-#if 0
+
 vector<pair<string, double> > FaceAnalyser::CorrectOnlineAUs(std::vector<std::pair<std::string, double> > predictions_orig, int view, bool dyn_shift, bool dyn_scale, bool update_track, bool clip_values)
 {
     // Correction that drags the predicion to 0 (assuming the bottom 10% of predictions are of neutral expresssions)
@@ -960,7 +960,7 @@ vector<pair<string, double> > FaceAnalyser::CorrectOnlineAUs(std::vector<std::pa
     }
     return predictions;
 }
-#endif
+
 // Apply the current predictors to the currently stored descriptors (classification)
 vector<pair<string, double> > FaceAnalyser::PredictCurrentAUsClass(int view)
 {
@@ -1129,7 +1129,7 @@ void FaceAnalyser::ReadAU(std::string au_model_location)
     }
 
 }
-#if 0
+
 void FaceAnalyser::UpdatePredictionTrack(cv::Mat_<int>& prediction_corr_histogram,
                                          int& prediction_correction_count, vector<double>& correction,
                                          const vector<pair<string, double> >& predictions, double ratio,
@@ -1187,7 +1187,7 @@ void FaceAnalyser::UpdatePredictionTrack(cv::Mat_<int>& prediction_corr_histogra
         }
     }
 }
-
+#if 0
 void FaceAnalyser::GetSampleHist(cv::Mat_<int>& prediction_corr_histogram, int prediction_correction_count, vector<double>& sample, double ratio, int num_bins, double min_val, double max_val)
 {
 
