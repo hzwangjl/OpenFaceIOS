@@ -62,20 +62,12 @@ using namespace FaceAnalysis;
 
 using namespace std;
 
-
-// Constructor from a model file (or a default one if not provided
-//FaceAnalyser::FaceAnalyser(const FaceAnalysis::FaceAnalyserParameters& face_analyser_params)
-FaceAnalyser::FaceAnalyser()
-{
-
-}
-
 void FaceAnalyser::init()
 {
-    string model_loc = this->svm_model_path;
-    this->Read(model_loc);
+  string model_loc = this->svm_model_path;
+  this->Read(model_loc);
 
-    align_mask = true;
+  align_mask = true;
 	align_scale_out = 0.7;
 	align_width_out = 112;
 	align_height_out = 112;
@@ -98,12 +90,12 @@ void FaceAnalyser::init()
 
 	// If the model used is dynamic (person callibration and video correction)
 	//dynamic = face_analyser_params.getDynamic();
-	dynamic = false;
+	dynamic = true;
 
 	//out_grayscale = face_analyser_params.grayscale;
 	out_grayscale = 0;
 
-    head_orientations.push_back(cv::Vec3d(0,0,0));
+  head_orientations.push_back(cv::Vec3d(0,0,0));
 
 	hog_hist_sum.resize(head_orientations.size());
 	face_image_hist_sum.resize(head_orientations.size());
@@ -153,7 +145,7 @@ std::vector<std::string> FaceAnalyser::GetAURegNames() const
 
 	return au_reg_names_all;
 }
-#if 0 //jelly
+
 std::vector<bool> FaceAnalyser::GetDynamicAUClass() const
 {
 	std::vector<bool> au_dynamic_class;
@@ -189,7 +181,7 @@ std::vector<std::pair<string, bool>> FaceAnalyser::GetDynamicAUReg() const
 
 	return au_dynamic_reg;
 }
-#endif
+
 cv::Mat_<int> FaceAnalyser::GetTriangulation()
 {
 	return triangulation.clone();

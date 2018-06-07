@@ -64,9 +64,8 @@ public:
 	enum RegressorType{ SVR_appearance_static_linear = 0, SVR_appearance_dynamic_linear = 1, SVR_dynamic_geom_linear = 2, SVR_combined_linear = 3, SVM_linear_stat = 4, SVM_linear_dyn = 5, SVR_linear_static_seg = 6, SVR_linear_dynamic_seg =7};
 
 	// Constructor for FaceAnalyser using the parameters structure
-	//FaceAnalyser(const FaceAnalysis::FaceAnalyserParameters& face_analyser_params);
-    FaceAnalyser();
-    void init();
+  FaceAnalyser(){};
+  void init();
 #if 0 //jelly
 	void AddNextFrame(const cv::Mat& frame, const cv::Mat_<float>& detected_landmarks, bool success, double timestamp_seconds, bool online = false);
 
@@ -94,12 +93,12 @@ public:
 	// Grab the names of AUs being predicted
 	std::vector<std::string> GetAUClassNames() const; // Presence
 	std::vector<std::string> GetAURegNames() const; // Intensity
-#if 0
+
 	// Identify if models are static or dynamic (useful for correction and shifting)
 	std::vector<bool> GetDynamicAUClass() const; // Presence
 	std::vector<std::pair<std::string, bool>> GetDynamicAUReg() const; // Intensity
 
-
+#if 0
 	void ExtractAllPredictionsOfflineReg(std::vector<std::pair<std::string, std::vector<double>>>& au_predictions,
 		std::vector<double>& confidences, std::vector<bool>& successes, std::vector<double>& timestamps, bool dynamic);
 	void ExtractAllPredictionsOfflineClass(std::vector<std::pair<std::string, std::vector<double>>>& au_predictions,
@@ -108,10 +107,10 @@ public:
 	// Helper function for post-processing AU output files
 	void PostprocessOutputFile(std::string output_file);
 #endif
-public:
-    std::string model_path;
-    std::string svm_model_path;
-    
+
+  std::string model_path;
+  std::string svm_model_path;
+
 private:
 
 	// Point distribution model coddesponding to the current Face Analyser
