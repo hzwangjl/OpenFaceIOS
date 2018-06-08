@@ -78,6 +78,21 @@ void ShowActionUnits(std::vector<std::pair<std::string, double> > au_regs,
                      cv::Mat& image)
 {
     CvScalar color;
+    for(int i = 0; i < au_class.size(); i++) {
+        if(au_regs[i].first == "AU01" || au_regs[i].first == "AU06" || au_regs[i].first == "AU07" || au_regs[i].first == "AU14" ||
+           au_regs[i].first == "AU15" || au_regs[i].first == "AU20" || au_regs[i].first == "AU23" || au_regs[i].first == "AU25" ){
+            continue;
+        }
+        
+        if(au_class[i].second != 0){
+             color = cvScalar(0, 0, 255);
+        }
+        else{
+             color = cvScalar(0, 255, 0);
+        }
+        //putText(image, au_class[i].first, cvPoint(10, 20 + 25 * i), 1, 1.5, color, 2);
+    }
+
     for(int i = 0; i < au_regs.size(); i++) {
         if(au_regs[i].first == "AU01" || au_regs[i].first == "AU06" || au_regs[i].first == "AU07" || au_regs[i].first == "AU14" ||
            au_regs[i].first == "AU15" || au_regs[i].first == "AU20" || au_regs[i].first == "AU23" || au_regs[i].first == "AU25" ){
@@ -116,8 +131,8 @@ void ShowActionUnits(std::vector<std::pair<std::string, double> > au_regs,
             }
         }
 
-        putText(image, au_regs[i].first, cvPoint(40, 20 + 25 * i), 1, 1.5, color, 2);
-        putText(image, std::to_string(au_regs[i].second), cvPoint(120, 20 + 25 * i), 1, 1.5, color, 2);
+        putText(image, au_regs[i].first, cvPoint(80, 20 + 25 * i), 1, 1.5, color, 2);
+        putText(image, std::to_string(au_regs[i].second), cvPoint(16b0, 20 + 25 * i), 1, 1.5, color, 2);
     }
 }
 
